@@ -136,6 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playLabel.text = "Tap to start"
         playLabel.fontName = "Arial"
         playLabel.position = CGPoint(x: frame.midX, y: frame.midY - 50)
+        playLabel.name = "playLabel"
         addChild(playLabel)
         
         livesLabel.fontSize = 18
