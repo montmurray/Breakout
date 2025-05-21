@@ -11,7 +11,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var ball = SKShapeNode()
     var paddle = SKSpriteNode()
-    var bricks = [SKSpriteNode]()
+    var bricks = [SKSpriteNode()]
     var loseZone = SKSpriteNode()
     var playLabel = SKLabelNode()
     var livesLabel = SKLabelNode()
@@ -182,11 +182,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        ball.physicsBody!.velocity.dx *= CGFloat(1.02)
-        ball.physicsBody!.velocity.dy *= CGFloat(1.02)
         for brick in bricks {
-            if contact.bodyA.node?.name == "brick" || contact.bodyB.node?.name == "brick" {
+            if contact.bodyA.node == brick || contact.bodyB.node == brick {
                 score += 1
+                ball.physicsBody!.velocity.dx *= CGFloat(1.02)
+                ball.physicsBody!.velocity.dy *= CGFloat(1.02)
                 updateLabels()
                 if brick.color == .blue {
                     brick.color = .orange
@@ -202,15 +202,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     }
                 }
             }
-            if contact.bodyA.node?.name == "loseZone" || contact.bodyB.node?.name == "loseZone" {
-                lives -= 1
-                if lives > 0 {
-                    score = 0
-                    resetGame()
-                    kickBall()
-                } else {
-                    gameOver(winner: false)
-                }
+        }
+        if contact.bodyA.node?.name == "loseZone" || contact.bodyB.node?.name == "loseZone" {
+            lives -= 1
+            if lives > 0 {
+                score = 0
+                resetGame()
+                kickBall()
+            } else {
+                gameOver(winner: false)
             }
         }
     }
